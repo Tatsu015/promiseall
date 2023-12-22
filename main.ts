@@ -5,7 +5,9 @@ const promise3 = new Promise((resolve, _) => {
 });
 
 async function promiseAll(obj: {}) {
-    const values = Object.values(obj)
+    const elms = Object.entries(obj)
+    const keys = elms.map((e) => e[0])
+    const values = elms.map((e) => e[1])
     const results = await Promise.all(values);
     return results
 }
