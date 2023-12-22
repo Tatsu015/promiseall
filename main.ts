@@ -5,12 +5,15 @@ const promise3 = new Promise((resolve, _) => {
 });
 
 async function f(values: any[]) {
-    console.log('start', new Date())
     const results = await Promise.all(values);
-
-    console.log('result', results)
-
-    console.log('end  ', new Date())
+    return results
 }
 
-f([promise1, promise2, promise3])
+async function main() {
+    console.log('[start]', new Date())
+    const results = await f([promise1, promise2, promise3])
+    console.log(results)
+    console.log('[ end ]', new Date())
+}
+
+main()
