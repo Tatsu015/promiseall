@@ -1,21 +1,29 @@
-const promise1 = Promise.resolve(3);
-const promise2 = 42;
-const promise3 = new Promise((resolve, _) => {
-    setTimeout(resolve, 1000, 'foo');
+const promise1: Promise<string> = new Promise((resolve, _) => {
+    setTimeout(resolve, 500, 'hoge');
+});
+const promise2: Promise<string> = new Promise((resolve, _) => {
+    setTimeout(resolve, 700, 'fuga');
+});
+const promise3: Promise<string> = new Promise((resolve, _) => {
+    setTimeout(resolve, 1000, 'piyo');
 });
 
-async function promiseAll(obj: {}) {
-    const elms = Object.entries(obj)
+type FnMap = Record<string, Promise<string>>
+
+async function promiseAll(fnMap: FnMap) {
+    const elms = Object.entries(fnMap)
     const keys = elms.map((e) => e[0])
     const values = elms.map((e) => e[1])
+
     const results = await Promise.all(values);
-    return results
+    const ret = keys.reduce((a, v, index) => ({ ...a, [v]: results[index] }), {})
+    return ret
 }
 
 async function main() {
     console.log('[start]', new Date())
 
-    const obj = {
+    const obj: FnMap = {
         p1: promise1,
         p2: promise2,
         p3: promise3,
