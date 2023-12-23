@@ -8,10 +8,11 @@ const promise3: Promise<string> = new Promise((resolve, _) => {
     setTimeout(resolve, 1000, 'piyo');
 });
 
-type FnMap = Record<string, Promise<string>>
+type Promises = Record<string, Promise<any>>
+type Awaiteds = { [K in keyof Promises]: Awaited<Promises[K]> }
 
-async function promiseAll(fnMap: FnMap) {
-    const elms = Object.entries(fnMap)
+async function promiseAll(promises: Promises): Promise<Awaiteds> {
+    const elms = Object.entries(promises)
     const keys = elms.map((e) => e[0])
     const values = elms.map((e) => e[1])
 
@@ -23,7 +24,7 @@ async function promiseAll(fnMap: FnMap) {
 async function main() {
     console.log('[start]', new Date())
 
-    const obj: FnMap = {
+    const obj: Promises = {
         p1: promise1,
         p2: promise2,
         p3: promise3,
